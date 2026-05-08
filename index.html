@@ -497,12 +497,17 @@
 
   const resp = await fetch("/computer")
   const data = await resp.json()
-  const hb = await Hyperbeam(virtualComputerDiv, data.embed_url)
+  console.log("data:", JSON.stringify(data))
 
-  hb.tabs.onUpdated.addListener((tabId, changeInfo) => {
-    if (changeInfo.title)
-      currentSite.innerText = changeInfo.title
-  })
+  if (!data.embed_url) {
+    console.error("No embed_url! Got:", JSON.stringify(data))
+  } else {
+    const hb = await Hyperbeam(virtualComputerDiv, data.embed_url)
+    hb.tabs.onUpdated.addListener((tabId, changeInfo) => {
+      if (changeInfo.title)
+        currentSite.innerText = changeInfo.title
+    })
+  }
 </script>
 
 </body>
