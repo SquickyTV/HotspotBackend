@@ -6,7 +6,7 @@ const app = express();
 app.use(cors({ origin: "*" }));
 
 let computer;
-
+app.use(express.static("."));
 app.get("/computer", async (req, res) => {
   if (computer) {
     res.send(computer);
