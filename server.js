@@ -4,9 +4,27 @@ const cors = require("cors");
 const app = express();
 
 app.use(cors({ origin: "*" }));
+app.use(express.static("."));
 
 let computer;
-app.use(express.static("."));
+
+async function cleanup() {
+  try {
+    const resp = await axios.get("https://engine.hyperbeam.com/v0/vm", {
+      headers: { Authorization: `Bearer ${process.env.HB_API_KEY}` },
+    });
+    const sessions = resp.data.results;
+    for (const session of sessions) {
+      await axios.delete(`https://engine.hyperbeam.com/v0/vm/${session.id}`, {
+        headers: { Authorization: `Bearer ${process.env.HB_API_KEY}` },
+      });
+      console.log("Deleted old session:", session.id);
+    }
+  } catch (err) {
+    console.error("Cleanup error:", err.message);
+  }
+}
+
 app.get("/computer", async (req, res) => {
   if (computer) {
     res.send(computer);
@@ -28,4 +46,7 @@ app.get("/computer", async (req, res) => {
   }
 });
 
-app.listen(process.env.PORT || 8080, () => console.log("Server running"));
+app.listen(process.env.PORT || 8080, async () => {
+  console.log("Server running");
+  await cleanup();
+});
