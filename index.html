@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<head>
+    <title>
+        Hotspot
+</title>
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon_io/apple-touch-icon.png?v=2">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png?v=2">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png?v=2">
+    <link rel="manifest" href="favicon_io/site.webmanifest?v=2">
+    <link rel="shortcut icon" href="favicon_io/favicon.ico?v=2" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+
+
+    <style>
+        body {
+                background-size: 100px 100px;
+                background-color: #000000;
+        }
+        .bg-squares {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: -1; 
+                overflow: hidden;
+                pointer-events: none; 
+        }
+
+        .square {
+                position: absolute;
+                width: 100px;
+                height: 100px;
+                background-color: rgba(199, 95, 16, 0.1); 
+                border: 1px solid rgba(208, 131, 43, 0.311);
+                border-radius: 4px;
+                transform: rotate(90deg);
+                animation: float 25s infinite ease-in-out;
+        }
+
+        .square:nth-child(1) { top: 10%; left: 10%; animation-duration: 30s; }
+        .square:nth-child(2) { top: 70%; left: 20%; animation-duration: 22s; width: 60px; height: 60px; }
+        .square:nth-child(3) { top: 40%; left: 80%; animation-duration: 28s; }
+        .square:nth-child(4) { top: 20%; left: 60%; animation-duration: 35s; width: 30px; height: 30px; }
+        .square:nth-child(5) { top: 80%; left: 70%; animation-duration: 20s; }
+        .square:nth-child(6) { top: 50%; left: 30%; animation-duration: 32s; }
+
+        @keyframes float {
+                0%, 100% {
+                        transform: translateY(0) translateX(0) rotate(45deg);
+                }
+                33% {
+                        transform: translateY(-20px) translateX(10px) rotate(5deg);
+                }
+                66% {
+                        transform: translateY(10px) translateX(-15px) rotate(-5deg);
+                }
+        }
+        
+
+        html, body {
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                overflow-x: hidden;
+        }
+        .top-bar {
+                background-color: rgb(0, 0, 0);
+                width: 100%;
+                padding: 20px 0;
+                border-bottom: 2px solid #ff8400;
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+        }
+        h1 {
+                font-size: 4rem;
+                text-align: center;
+                font-weight: 800;
+                margin-bottom: 40px;
+                color: #ff7300;
+        }
+
+        button {
+                background: rgba(254, 116, 3, 0.077);
+                border: 1px solid rgba(213, 187, 161, 0.3);
+                border-radius: 15px;
+                padding: 10px;
+                margin: 15px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                backdrop-filter: blur(5px);
+                width: 120px;
+                height: 120px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+        }
+        button:hover {
+                transform: translateY(-10px) scale(1.05);
+                border-color: #ff8400;
+                box-shadow: 0 0 20px rgba(255, 145, 0, 0.4);
+                background: rgba(255, 255, 255, 0.1);
+        }
+        button img {
+                border-radius: 10px;
+                width: 100% !important; 
+                height: 100% !important;
+                object-fit: contain;
+        }
+        .no-hover:hover {
+                background-color: initial !important;
+                color: initial !important;
+                cursor: default;
+         }
+        
+        p, span, div {
+        color: #d5bca1; 
+    }
+
+        iframe, #display-area {
+                width: 90%; 
+                max-width: 1200px; 
+                margin: 40px auto; 
+                display: block; 
+                border: 2px solid #a36714;
+                border-radius: 15px;
+                box-shadow: 0 0 30px rgba(163, 113, 20, 0.4);
+        }
+        .container {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr); 
+                gap: 10px;
+                max-width: 500px; 
+                margin: 0; 
+                padding: 0;
+        }
+        img[src*="TheJazzLogo"] {
+                background: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
+                display: block;
+                margin: 10px auto; 
+                width: 550px; 
+                height: auto; 
+        }
+        h2 {
+                font-size: 3.5rem;
+                text-align: center;
+                font-weight: 800;
+                margin: 40px 0; 
+                color: #ff7300 !important; 
+                -webkit-text-fill-color: #ff8400 !important; 
+                -webkit-background-clip: unset !important;
+                position: relative;
+                z-index: 10;
+        }
+        .bottom-bar {
+                background-color: rgba(8, 3, 18, 0.9);
+                background-filter: blur(10px);
+                border-top: 2px solid #ff8800;
+                padding: 20px 20px;
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+                flex-wrap: wrap;
+                color: #d5bea1;
+                margin-top: 0;
+        }
+        .bottom-bar img {
+                width: 0px;
+                height: 0px;
+                margin-bottom: 0px;
+                filter: drop-shadow(0 0 10px rgba(255, 136, 0, 0.3));
+        }
+        .footer-left {
+                text-align: left;
+        }
+        .footer-info p {
+                margin: 10px 0;
+                font-size: 2rem;
+        }
+        .footer-info strong {
+                color: #ff8000;
+                
+        }
+        .team-info p {
+                font-size: 2rem;
+                
+        }
+        a {
+                color: #ffbd6c
+        }
+        .main-layout {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start; 
+                max-width: 90%;
+                margin: 40px auto; 
+                gap: 40px;
+                position: relative;
+        }
+        .tips {
+                margin-left: auto;
+                width: 350px; 
+                position: sticky;
+                top: 140px;
+                z-index: 5;
+        }
+
+        .side-panel {
+                background-color: rgba(0, 0, 0, 0.6);
+                border: 2px solid #ff8400;
+                border-radius: 20px;
+                padding: 30px;
+                backdrop-filter: blur(10px);
+                box-shadow: 0 0 30px rgba(255, 132, 0, 0.3);
+                text-align: center;
+                height: fit-content;
+        }
+
+        .side-panel p {
+                font-size: 1.8rem;
+                margin: 15px 0;
+                line-height: 1.4;
+        }
+
+        .side-panel strong {
+                font-size: 2.2rem;
+                color: #ff8400;
+                display: block;
+                margin-bottom: 5px;
+        }
+        .random-btn {
+                display: flex;       
+                justify-content: center;     
+                align-items: center;           
+                margin: 40px auto 80px auto;
+                width: 300px;
+                height: 80px;
+                font-size: 2rem;
+                font-weight: bold;           
+                border-radius: 20px;
+                border: 2px solid #ff8400;
+                background: rgba(255, 132, 0, 0.1);
+                color: #ff8400;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                line-height: 1;                
+                overflow: hidden;               
+                text-align: center;
+        }
+
+        .random-btn:hover {
+                transform: scale(1.08);
+                box-shadow: 0 0 25px rgba(255, 132, 0, 0.6);
+        }
+        .popular-container {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                gap: 20px;
+                max-width: 800px;
+                margin: 0 auto 60px auto;
+        }
+        .bottom-bar p {
+                font-size: 1.5rem;
+                color: #faa43b;
+        }
+        .next-page-btn {
+                color: #ff8400; 
+                font-weight: bold;
+                font-family: 'Bebas Neue', sans-serif; 
+                font-size: 1.2rem;
+        }
+        .movie button {
+                transform: none;
+                border: none;
+                box-shadow: none;
+                background: none;
+                padding: 0;
+                margin: 0;
+                width: 100%;
+                height: auto;
+        }
+        #virtualComputerDiv {
+                cursor: none;
+        }
+        
+        
+    </style>
+        <script src="https://pl29082661.profitablecpmratenetwork.com/75/24/c4/7524c42687cf55b04efbca0952dd058d.js"></script>
+    </head>
+<body>
+
+<div class="top-bar">
+        <h1>HOTSPOT</h1>
+</div>
+<div class="main-layout">
+        <div class="container">
+                    <button onclick="window.location.href='https://cosmic-medovik-2675a0.netlify.app/';">
+                        <img src="logos/superstarcar.png" alt="Super Star Car" style="width: 350px; height: 200px;"></img>
+                </button>  
+                <button onclick="window.location.href='H/Poly Track.html';">
+                        <img src="logos/polytrack.png" alt="Poly Track" style="width: 200px; height: 200px;"></img>
+                </button>
+                <button onclick="window.location.href='H/cldriftboss.html';">
+                        <img src="logos/driftboss.png" alt="Drift Boss" style="width: 200px; height: 200px;"></img>
+                </button> 
+                 <button onclick="window.location.href='H/clcoreball.html';">
+                        <img src="logos/coreball.png" alt="Core Ball" style="width: 200px; height: 200px;"></img>
+                </button>
+                <button onclick="window.location.href='H/clslowroads.html';">
+                        <img src="logos/slowroads.png" alt="Slow Roads" style="width: 200px; height: 200px;"></img>
+                </button>
+                <button onclick="window.location.href='H/clclusterrush.html';">
+                        <img src="logos/clusterrush.png" alt="Cluster Rush" style="width: 200px; height: 200px;"></img>
+                </button>
+                <button onclick="window.location.href='H/dante-main/index.html';">
+                        <img src="logos/dante.png" alt="Dante Main" style="width: 200px; height: 200px;"></img>
+                </button>
+                <button onclick="window.location.href='H/clgladdihoppers.html';">
+                        <img src="logos/gladihoppers.png" alt="Gladi Hoppers" style="width: 200px; height: 200px;"></img>
+                </button>
+                <button onclick="window.location.href='H/cl1v1lol.html';">
+                        <img src="logos/1v1lol.png" alt="1v1.lol" style="width: 200px; height: 200px;"></img>
+                </button>
+                <button onclick="window.location.href='H/cldeadlydescent.html';">
+                        <img src="logos/deadlydescent.png" alt="Deadly Descent" style="width: 350px; height: 200px;"></img>
+                </button>
+                <button onclick="window.location.href='H/They Are Coming.html';">
+                        <img src="logos/theyarecoming.png" alt="They Are Coming" style="width: 350px; height: 200px;"></img>
+                </button>
+                <button onclick="window.location.href='H/DONTYOULECTUREME.html';">
+                        <img src="logos/dontyoulectureme.png" alt="Don't You Lecture Me" style="width: 200px; height: 200px;"></img>
+                </button>
+                <button onclick="window.location.href='H/ULTRAKILL.html';">
+                        <img src="logos/ultrakill.png" alt="ULTRAKILL" style="width: 400px; height: 200px;"></img>
+                </button>
+                <button onclick="window.location.href='H/clobbybike.html';">
+                        <img src="logos/obbybike.png" alt="bike obby">
+                </button>
+                <button onclick="window.location.href='H/cltimeshooter2.html';">
+                        <img src="logos/timeshooter2.png" alt="Time Shooter 2" style="width: 200px; height: 200px;"></img>
+                </button>
+                <button onclick="window.location.href='H/notmyneighbor.html';">
+                        <img src="logos/thatsnotmyneighbor.png" alt="That's not my neighbor" style="width: 400px; height: 200px;"></img>
+                </button>
+                <button onclick="window.location.href='H/cldrifthuntersmerge.html';">
+                        <img src="logos/drifthunters.png" alt="Drift Hunters" style="width: 200px; height: 200px;"></img>
+                </button>
+                <button onclick="window.location.href='H/IronLung.html';">
+                        <img src="logos/ironlung.png" alt="Iron Lung" style="width: 350px; height: 200px;"></img>
+                </button>
+                <button onclick="window.location.href='H/hollow knight.html';">
+                        <img src="logos/hollowknight.png" alt="Hollow Knight" style="width: 400px; height: 200px;"></img>
+                </button> 
+                <button onclick="window.location.href='H/clcrossyroad.html';">
+                        <img src="logos/crossyroad.png" alt="Crossy Road" style="width: 200px; height: 200px;"></img>
+                </button>
+                <button onclick="window.location.href='H/cl3dash.html';">
+                        <img src="logos/3dash.jpg" alt="3D dash" style="width: 200px; height: 200px;"></img>
+                </button>
+                <button class="next-page-btn" onclick="window.location.href='page2.html'">
+                        ➡ NEXT PAGE
+                </button>
+                
+                
+           
+                
+                
+                
+                
+                
+                
+                
+
+
+
+
+
+
+</div><div class="tips">
+        <div class="side-panel">
+            <p><strong>THE HOTSPOT TEAM</strong>
+            Created with passion for gaming.</p>
+            
+            <p><strong>LINKS</strong>
+            <a href="https://docs.google.com/forms/...">Request</a><br>
+            <a href="https://docs.google.com/forms/...">Subscribe</a><br>
+            <a href="https://docs.google.com/forms/...">Report Bugs</a></p>
+
+            <p><strong>PRO TIP</strong>
+            You can press "0" in some games to quickly go to Google Classroom!</p>
+            <div class="movie">
+        <img src="HotSpotLogo.png" alt="Logo" style="width: 100%; height: auto; margin-top: 20px; opacity: 0.8;">
+        </div>
+        </div>
+        <h2>🔥 MOST POPULAR</h2>
+        <div class="popular-container">
+                <button onclick="window.location.href='H/cldrifthuntersmerge.html';">
+                        <img src="logos/drifthunters.png" alt="Drift Hunters" style="width: 200px; height: 200px;"></img>
+                </button>
+                <button onclick="window.location.href='H/IronLung.html';">
+                        <img src="logos/ironlung.png" alt="Iron Lung" style="width: 350px; height: 200px;"></img>
+                </button>
+                <button onclick="window.location.href='H/hollow knight.html';">
+                        <img src="logos/hollowknight.png" alt="Hollow Knight" style="width: 400px; height: 200px;"></img>
+                </button> 
+                <button onclick="window.location.href='H/clcrossyroad.html';">
+                        <img src="logos/crossyroad.png" alt="Crossy Road" style="width: 200px; height: 200px;"></img>
+                </button>
+                
+
+        </div>
+</div>
+</div>
+<script async="async" data-cfasync="false" src="https://pl29101274.profitablecpmratenetwork.com/4348600d4e7a213885e1a1bb9d149466/invoke.js"></script>
+<div id="container-4348600d4e7a213885e1a1bb9d149466"></div>
+
+
+
+
+
+
+
+
+<div class="bg-squares">
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+</div>
+<div style="font-family: sans-serif">
+  <p>Current website: <span id="currentSite"></span></p>
+</div>
+<div id="virtualComputerDiv" style="height:720px;width:flex"></div>
+
+
+
+
+<div class="bottom-bar">
+    <p>🎮 Thanks for using the HOTSPOT!</p>
+</div>
+
+
+
+    
+
+
+
+    
+    
+    <script>
+        let numOfUsers = 0;
+        console.log("User Joined Hotspot!");
+        numOfUsers++;
+        console.log("Total Users: " + numOfUsers);
+        document.addEventListener("keydown", function(event) {
+                if (event.key === '0') {
+                        window.location.href = 'https://classroom.google.com';
+                }
+        })
+
+        
+        function playRandom() {
+
+    const gs = [
+    ];
+
+    const randomIndex = Math.floor(Math.random() * gs.length);
+    window.location.href = gs[randomIndex];
+}
+    </script>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then(registrations => {
+      for (let reg of registrations) {
+        reg.unregister();
+        console.log('ServiceWorker unregistered:', reg);
+      }
+    });
+    // Reload once after unregistering so it takes effect
+    navigator.serviceWorker.getRegistrations().then(r => {
+      if (r.length > 0) location.reload();
+    });
+  }
+</script>
+<script type="module">
+  import Hyperbeam from "https://unpkg.com/@hyperbeam/web@latest/dist/index.js"
+
+  const resp = await fetch("/computer")
+  const data = await resp.json()
+  const hb = await Hyperbeam(virtualComputerDiv, data.embed_url)
+
+  gotoYouTubeBtn.addEventListener("click", () => {
+    hb.tabs.update({ url: "https://youtube.com" })
+  })
+
+  hb.tabs.onUpdated.addListener((tabId, changeInfo) => {
+    if (changeInfo.title)
+      currentSite.innerText = changeInfo.title
+  })
+</script>
+
+</body>
+</html>
