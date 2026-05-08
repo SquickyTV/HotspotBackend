@@ -499,10 +499,6 @@
   const data = await resp.json()
   const hb = await Hyperbeam(virtualComputerDiv, data.embed_url)
 
-  gotoYouTubeBtn.addEventListener("click", () => {
-    hb.tabs.update({ url: "https://youtube.com" })
-  })
-
   hb.tabs.onUpdated.addListener((tabId, changeInfo) => {
     if (changeInfo.title)
       currentSite.innerText = changeInfo.title
