@@ -23,4 +23,4 @@ app.get("/computer", async (req, res) => {
   res.send(computer);
 });
 
-app.listen(8080, () => console.log("Server running"));
+app.listen(process.env.PORT || 8080, () => console.log("Server running"));
